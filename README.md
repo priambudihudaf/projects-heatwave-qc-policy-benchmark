@@ -75,6 +75,10 @@ Real-mode output directory: `outputs/V21_NOAA_CONTROLLED/`.
 
 Read the **[final audit and publication gates](docs/FINAL_AUDIT_2026-11-26.md)** before quoting any result.
 
+## Full manuscript (v2.1)
+
+The complete [exploratory manuscript draft](manuscript/Manuscript_v2.1_Draft.md), [figure gallery](manuscript/README.md), source-linked Results tables and carefully qualified Discussion are now available. Submission remains pending author declarations, permanent output archiving and scientific review.
+
 ## Manuscript preparation and publication status
 
 1. [Current v2.1 manuscript outline and evidence map](docs/MANUSCRIPT_OUTLINE.md)

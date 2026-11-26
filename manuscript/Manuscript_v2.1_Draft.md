@@ -132,7 +132,9 @@ The ordering persisted descriptively across the noisy and hot-enriched settings,
 | Hot-run length | 0.556 | 0.759 | 0.653 | 0.995 |
 | **Event impact** | **0.426** | **0.630** | **0.556** | **0.880** |
 
-**Figure 1.** Controlled retrospective review benchmark, from quality-screened NOAA reference temperatures to synthetic errors and flags, five budget-matched rankings, idealized review, reconstructed heatwaves and paired outcome comparison. Every simulation-specific step should be labeled as synthetic or idealized. *(Figure design provided with the editable manuscript; create a vector version for submission.)*
+![Figure 1. Controlled retrospective QC review workflow](figures/Figure01_study_design.svg)
+
+**Figure 1.** Controlled retrospective review benchmark, from quality-screened NOAA reference temperatures to synthetic errors and flags, five budget-matched rankings, idealized review, reconstructed heatwaves and paired outcome comparison. Every simulation-specific step should be labeled as synthetic or idealized. Vector SVG supplied; replace or refine for publisher specifications if needed.
 
 ### 3.3 Paired differences and exploratory uncertainty
 
@@ -151,7 +153,11 @@ Event impact retained a descriptive advantage over hot-run when flags were conce
 
 The full 144-setting sensitivity grid (2 regimes × 2 placements × 2 lengths × 3 budgets × 3 reviewer probabilities × 2 IoU values) had a positive event-impact-minus-anomaly *loss reduction* in all 144 cells. Relative to hot-run, 142 cells favored event impact descriptively, one was tied, and one favored hot-run. These counts are a **descriptive robustness inventory, not 144 independent validation experiments**; they should not be used as familywise statistical evidence.
 
-**Figure 2.** Paired gains from event impact relative to anomaly and hot-run under the four synthetic flag settings, using the designated primary slice. Intervals are exploratory station-level percentile bootstrap ranges. *(Prepare directly from v21_paired_effects.csv, not from simulated demo output.)*
+![Figure 2. Composite event distortion by strategy and flag regime](figures/Figure02_strategy_distortion.svg)
+
+**Figure 2a.** Composite event distortion across the five ranking strategies in the designated primary analysis slice, based on the archived NOAA v2.1 controlled-experiment CSV. Descriptive bars are mean counts per simulated trial.
+
+**Figure 2.** Paired gains from event impact relative to anomaly and hot-run under the four synthetic flag settings, using the designated primary slice. Intervals are exploratory station-level percentile bootstrap ranges. The displayed figure is a strategy-level descriptive companion; Figure 4 presents the paired bootstrap intervals directly from v21_paired_effects.csv.
 
 ### 3.4 Distortion components and correction trade-offs
 
@@ -172,7 +178,9 @@ However, event impact did **not** optimize correction of point-level injected er
 | **Injected point errors corrected** | **3.546** | 3.185 | 3.204 |
 | Matched-event conditional mean absolute peak error (°C) | 0.371 | 0.411 | 0.411 |
 
-**Figure 3.** In the balanced/uniform primary setting, plot composite event distortion together with corrected injected point errors on separate labeled panels; the opposite preferred directions of the two metrics demonstrate the decision trade-off. *(Use v21_trials.csv and report the paired unit of analysis in the caption.)*
+![Figure 3. Point-error corrections and event distortion trade-off](figures/Figure03_tradeoff.svg)
+
+**Figure 3.** In the balanced/uniform primary setting, plot composite event distortion together with corrected injected point errors on separate labeled panels; the opposite preferred directions of the two metrics demonstrate the decision trade-off. Descriptive means were calculated from v21_trials.csv; uncertainty for the paired station-year comparisons is reported in the accompanying tables.
 
 ### 3.5 Budget, reviewer, and duration sensitivity
 
@@ -191,7 +199,9 @@ At a 25% budget, changing simulated reviewer success from 70% to 90% to 100% cha
 | 50% | 90% | 3 | 0.310 [0.176, 0.463] | 0.167 [0.111, 0.236] |
 | 25% | 90% | 6 | 0.162 [0.072, 0.296] | 0.056 [0.016, 0.097] |
 
-**Figure 4.** Plot event-impact paired gains against budget and simulated reviewer success; show the balanced/uniform scenario with distinct anomaly and hot-run comparators, and distinguish event duration in an optional supplementary panel. *(Create from the archived paired-effects file; avoid treating plotted settings as independent replicates.)*
+![Figure 4. Primary paired gain uncertainty against anomaly and hot-run](figures/Figure04_paired_gains.svg)
+
+**Figure 4.** Plot event-impact paired gains against budget and simulated reviewer success; show the balanced/uniform scenario with distinct anomaly and hot-run comparators, and distinguish event duration in an optional supplementary panel. The displayed interval plot is derived from the archived v21_paired_effects.csv; the eight plotted comparisons share station-years and are not independent replications.
 
 ## 4 Discussion
 
