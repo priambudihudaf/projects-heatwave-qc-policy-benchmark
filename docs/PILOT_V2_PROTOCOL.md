@@ -1,4 +1,4 @@
-> **HISTORICAL v2 ONLY — NOT THE CURRENT v2.1 MANUSCRIPT PROTOCOL.** This document is preserved for reproducibility. For current code/methods see [v2.1 protocol](PILOT_V21_PROTOCOL.md) and [version history](VERSION_HISTORY.md).
+> **HISTORICAL v2 ONLY — NOT THE CURRENT v2.1 MANUSCRIPT PROTOCOL.** This document is preserved for reproducibility; mentions of `main` in the original v2 text describe repository state **at that time**, before v2.1 was merged to `main`. For current code/methods see [v2.1 protocol](PILOT_V21_PROTOCOL.md) and [version history](VERSION_HISTORY.md).
 
 # Pilot v2 — event-impact-aware QC review prioritization
 **Status: IMPLEMENTATION / EXPLORATORY METHODS. NOT A PUBLISHED RESULT.**

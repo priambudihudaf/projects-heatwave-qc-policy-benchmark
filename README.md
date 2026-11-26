@@ -2,7 +2,7 @@
 
 **Current research manuscript title:** *Retrospective Heatwave-Aware Prioritization of Quality-Control Reviews: A Controlled Sensitivity Study Using Public Temperature Observations*
 
-**Current implementation:** v2.1, `run_v21.py` + `src/heatqc/review_v21.py` (which reuses helpers in `review_v2.py`).  
+**Current implementation on `main`:** v2.1, `run_v21.py` + `src/heatqc/review_v21.py` (which reuses helpers in `review_v2.py`).  
 **Status (26 November 2026):** completed exploratory controlled pilot and methodological audit; **GO for qualified manuscript drafting; NOT ready for submission or operational deployment**.
 
 > **Scientific boundary:** NOAA USCRN Daily01 daily maximum temperature is public but **already quality-screened**. All experimental sensor errors, candidate QC flags, and reviewer outcomes are **synthetic**. No NOAA/BMKG operational QC decisions or real sensor-error rates are inferred. A successful simulated reviewer restores the QC-screened reference **exactly** (an optimistic oracle-on-success assumption). This is an **offline/retrospective** study, not real-time QC.
@@ -38,7 +38,7 @@ Use Python 3.11+. For the research implementation:
 ```bash
 git clone https://github.com/priambudihudaf/projects-heatwave-qc-policy-benchmark.git
 cd projects-heatwave-qc-policy-benchmark
-git checkout research/event-impact-aware-qc-v2-1
+# main contains the current v2.1 implementation
 python -m pip install -r requirements.txt
 python -m unittest discover -s tests -v
 python run_v21.py --mode demo --stations 3 --reps 1 --bootstrap 50
@@ -47,7 +47,7 @@ python run_v21.py --mode real --stations 12 --reps 6 --bootstrap 300
 
 The demo is **entirely synthetic and NOT scientific evidence**. The real-mode experiment uses public NOAA observations as a QC-screened **reference proxy**, then imposes simulated errors, flags and review decisions.
 
-**Colab:** [Run v2.1 notebook](https://colab.research.google.com/github/priambudihudaf/projects-heatwave-qc-policy-benchmark/blob/research/event-impact-aware-qc-v2-1/notebooks/Run_Heatwave_QC_V21_from_GitHub.ipynb).
+**Colab:** [Run v2.1 notebook](https://colab.research.google.com/github/priambudihudaf/projects-heatwave-qc-policy-benchmark/blob/main/notebooks/Run_Heatwave_QC_V21_from_GitHub.ipynb).
 
 Real-mode output directory: `outputs/V21_NOAA_CONTROLLED/`.
 
@@ -93,7 +93,7 @@ Read the **[final audit and publication gates](docs/FINAL_AUDIT_2026-11-26.md)**
 | v2 | `run_v2.py` | Random / anomaly / event-impact review prioritization, ideal reviewer | **Historical pilot** |
 | **v2.1** | **`run_v21.py`** | Five rankers, matched FP placements, imperfect oracle review, 1:1 IoU matching, paired uncertainty | **Active manuscript evidence** |
 
-Legacy components are kept for reproducibility; **do not run `run.py` or use the old v1 outline when reporting v2.1**. The research branch `research/event-impact-aware-qc-v2-1` is the authoritative v2.1 snapshot; the historical source migration is in [docs/MIGRATION.md](docs/MIGRATION.md).
+Legacy components are kept for reproducibility; **do not run `run.py` or use the old v1 outline when reporting v2.1**. The default `main` branch now includes v2.1; the historical research branch `research/event-impact-aware-qc-v2-1` retains a reproducible pre-merge snapshot; the historical source migration is in [docs/MIGRATION.md](docs/MIGRATION.md).
 
 ## Public sources and ethical scope
 

@@ -1,7 +1,7 @@
 name: Pilot v2.1 — tests and synthetic demo
 on:
   push:
-    branches: [research/event-impact-aware-qc-v2-1]
+    branches: [main, research/event-impact-aware-qc-v2-1]
     paths:
       - 'src/heatqc/**'
       - 'tests/**'

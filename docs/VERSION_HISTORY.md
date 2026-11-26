@@ -1,6 +1,6 @@
 # Research version history and migration notes
 
-This repository intentionally keeps prior experiments to preserve reproducibility. **v2.1, not v1, is the active manuscript study**.
+This repository intentionally keeps prior experiments to preserve reproducibility. **v2.1 is now on default `main` and is the active manuscript study**. Prior runner scripts remain available.
 
 | Version | Runner | Experiment | Status |
 | --- | --- | --- | --- |
