@@ -123,3 +123,30 @@ Read [Pilot v2 research protocol](docs/PILOT_V2_PROTOCOL.md),
 [Colab v2](notebooks/Run_Heatwave_QC_V2_from_GitHub.ipynb) for limitations.
 No results should be reported as scientific novelty until reproducibility,
 sensitivity checks, and 2025–2026 literature review are complete.
+
+## Pilot v2.1 — robustness benchmark (separate research branch)
+
+**Branch:** `research/event-impact-aware-qc-v2-1`. Pilot v1 on `main` and Pilot v2 on
+`research/event-impact-aware-qc-v2` remain unchanged.
+
+The v2.1 robustness experiments test **uniform vs hot-enriched false-flag placement
+at the same false-positive count**, **simulated reviewer reliability 70/90/100%**,
+and two additional label-blind review priority baselines (**hot-run length** and
+**proximity to the training P90**). Heatwave matching is now optimal one-to-one
+day-set IoU at thresholds 0.25 and 0.50.
+
+```bash
+python -m pip install -r requirements.txt
+python -m unittest discover -s tests -v
+python run_v21.py --mode demo --stations 3 --reps 1
+python run_v21.py --mode real --stations 12 --reps 6
+```
+
+**Open [Pilot v2.1 in Colab](notebooks/Run_Heatwave_QC_V21_from_GitHub.ipynb)**.
+Outputs are in `outputs/V21_NOAA_CONTROLLED` and should be archived locally.
+
+**Scientific interpretation:** NOAA Daily01 provides already-QC-screened daily
+Tmax. Error injections, QC flags, and inspection outcomes are simulated, not
+actual NOAA quality-control actions. Even a "successful" reviewer uses the
+original provider-screened reference value (an optimistic oracle). See the
+[v2.1 methodology and limitations](docs/PILOT_V21_PROTOCOL.md).

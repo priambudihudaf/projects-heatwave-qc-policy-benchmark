@@ -1,0 +1,39 @@
+name: Pilot v2.1 — tests and synthetic demo
+on:
+  push:
+    branches: [research/event-impact-aware-qc-v2-1]
+    paths:
+      - 'src/heatqc/**'
+      - 'tests/**'
+      - 'run_v21.py'
+      - 'requirements.txt'
+      - '.github/workflows/v21-tests.yml'
+  pull_request:
+    paths:
+      - 'src/heatqc/**'
+      - 'tests/**'
+      - 'run_v21.py'
+      - 'requirements.txt'
+      - '.github/workflows/v21-tests.yml'
+  workflow_dispatch:
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Unit tests (all versions)
+        run: python -m unittest discover -s tests -v
+      - name: V2.1 fully synthetic smoke
+        run: python run_v21.py --mode demo --stations 3 --reps 1 --bootstrap 50
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v21-synthetic-demo-not-scientific-results
+          path: outputs/V21_DEMO_SYNTHETIC/
+          if-no-files-found: warn
