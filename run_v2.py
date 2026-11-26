@@ -60,23 +60,25 @@ def prepare(args,out):
 
 def plot_results(effects:pd.DataFrame,out:Path,mode:str):
     metric="event_distortion_count"
-    data=effects[(effects.metric==metric)&(effects.comparison=="event_impact vs random")]
-    fig,ax=plt.subplots(figsize=(9,5))
-    for (regime,min_len),g in data.groupby(["regime","min_length"]):
-        g=g.sort_values("review_budget")
-        ax.errorbar(g.review_budget,g.paired_gain,
-                    yerr=np.vstack((np.maximum(0,g.paired_gain-g.ci95_low),
-                                    np.maximum(0,g.ci95_high-g.paired_gain))),
-                    marker="o",capsize=3,label=f"{regime}, min days {min_len}")
-    ax.axhline(0,linewidth=1,linestyle="--")
-    ax.set(xlabel="Fraction of flagged observations reviewed",
-           ylabel="Paired reduction in event distortion vs random\n(positive = better; station-year scale)",
-           title=("SYNTHETIC-ONLY DEMO — NOT SCIENTIFIC RESULTS" if mode=="demo"
-                  else "NOAA QC-SCREENED REFERENCE + SYNTHETIC FLAGS / ORACLE REVIEW"))
-    ax.legend()
-    fig.tight_layout()
-    fig.savefig(out/"v2_gain_vs_random.png",dpi=160)
-    plt.close(fig)
+    for baseline in ("random","anomaly"):
+        comparison=f"event_impact vs {baseline}"
+        data=effects[(effects.metric==metric)&(effects.comparison==comparison)]
+        fig,ax=plt.subplots(figsize=(9,5))
+        for (regime,min_len),g in data.groupby(["regime","min_length"]):
+            g=g.sort_values("review_budget")
+            ax.errorbar(g.review_budget,g.paired_gain,
+                        yerr=np.vstack((np.maximum(0,g.paired_gain-g.ci95_low),
+                                        np.maximum(0,g.ci95_high-g.paired_gain))),
+                        marker="o",capsize=3,label=f"{regime}, min days {min_len}")
+        ax.axhline(0,linewidth=1,linestyle="--")
+        ax.set(xlabel="Fraction of flagged observations reviewed",
+               ylabel=f"Paired event-distortion reduction vs {baseline}\n(positive = better; station-year scale)",
+               title=("SYNTHETIC-ONLY DEMO — NOT SCIENTIFIC RESULTS" if mode=="demo"
+                      else "NOAA QC-SCREENED REFERENCE + SYNTHETIC FLAGS / ORACLE REVIEW"))
+        ax.legend()
+        fig.tight_layout()
+        fig.savefig(out/f"v2_gain_vs_{baseline}.png",dpi=160)
+        plt.close(fig)
     for min_len in sorted(effects.min_length.unique()):
         ss=effects[(effects.metric==metric)&(effects.min_length==min_len)]
         fig,ax=plt.subplots(figsize=(9,5))
@@ -144,8 +146,8 @@ def main():
           "budgets:",list(BUDGETS),"strategies: random, anomaly, event_impact")
     print("Outputs:",out)
     p2=effects[(effects.metric=="event_distortion_count")&
-               (effects.comparison=="event_impact vs random")]
-    print("Exploratory paired effect summary (positive=better vs random):")
+               (effects.comparison=="event_impact vs anomaly")]
+    print("Exploratory paired effect summary (positive=event-impact improves over anomaly):")
     print(p2[["regime","min_length","review_budget","paired_gain","ci95_low","ci95_high"]].to_string(index=False))
     print("These are results of synthetic interventions and ORACLE review, not observed NOAA QC behavior.")
 

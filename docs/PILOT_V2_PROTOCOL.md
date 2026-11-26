@@ -60,7 +60,8 @@ data and can be deceived by erroneous temperature values.
 - Primary *event distortion count* is a transparent exploratory equal-weight
   sum: missed + spurious + fragmented reference events.
 - Positive **paired gain** means the comparator produces less distortion than
-  the random baseline on the SAME trial and SAME budget.
+  the named baseline on the SAME trial and SAME budget. Report both
+  **event_impact vs anomaly** (primary) and comparisons to random (secondary).
 - Report the separate components (a composite can obscure trade-offs).
 - Average repeated interventions within each station-year, then use a
   station-cluster bootstrap. Repeated trials and neighboring heatwaves

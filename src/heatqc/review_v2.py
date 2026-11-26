@@ -209,7 +209,7 @@ def run_review_benchmark(test: pd.DataFrame, thresholds:dict,
     return pd.DataFrame(rows)
 
 def paired_effects(runs:pd.DataFrame,n_boot:int=500,seed:int=2401)->pd.DataFrame:
-    """Effect = random minus comparator (positive is improvement).
+    """Effect = baseline minus comparator (positive means comparator improves).
 
     First average repeated interventions per station-year, then average
     station-year differences equally; bootstrap station clusters for CIs.
@@ -223,10 +223,10 @@ def paired_effects(runs:pd.DataFrame,n_boot:int=500,seed:int=2401)->pd.DataFrame
     grouped=runs.pivot(index=keys,columns="strategy",values=metrics)
     rows=[]
     for metric in metrics:
-        if (metric,"random") not in grouped: continue
-        for comp in ("anomaly","event_impact"):
-            if (metric,comp) not in grouped:continue
-            delta=(grouped[(metric,"random")]-grouped[(metric,comp)]).rename("paired_gain").reset_index()
+        for baseline,comp in (("random","anomaly"),("random","event_impact"),
+                              ("anomaly","event_impact")):
+            if (metric,baseline) not in grouped or (metric,comp) not in grouped:continue
+            delta=(grouped[(metric,baseline)]-grouped[(metric,comp)]).rename("paired_gain").reset_index()
             for (regime,min_length,budget),sub in delta.groupby(["regime","min_length","review_budget"]):
                 units=sub.groupby(["station_id","year"],as_index=False)["paired_gain"].mean()
                 units=units[np.isfinite(units.paired_gain)]
@@ -236,13 +236,13 @@ def paired_effects(runs:pd.DataFrame,n_boot:int=500,seed:int=2401)->pd.DataFrame
                 # bootstrap, while retaining station-year mean point estimate.
                 by_station=units.groupby("station_id")["paired_gain"].mean().to_numpy()
                 if len(by_station)>=2:
-                    rng=np.random.default_rng(stable_seed(metric,comp,regime,min_length,budget,seed=seed))
+                    rng=np.random.default_rng(stable_seed(metric,baseline,comp,regime,min_length,budget,seed=seed))
                     boot=np.array([rng.choice(by_station,size=len(by_station),replace=True).mean() for _ in range(n_boot)])
                     lo,hi=np.percentile(boot,[2.5,97.5])
                 else:lo,hi=np.nan,np.nan
                 rows.append({"regime":regime,"min_length":int(min_length),
                              "review_budget":float(budget),"metric":metric,
-                             "comparison":f"{comp} vs random",
+                             "comparison":f"{comp} vs {baseline}",
                              "paired_gain":avg,"ci95_low":float(lo),
                              "ci95_high":float(hi),
                              "n_station_years":int(len(units)),

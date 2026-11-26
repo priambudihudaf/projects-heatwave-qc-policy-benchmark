@@ -75,7 +75,7 @@ class ReviewV2Tests(unittest.TestCase):
         self.assertTrue((out.groupby(keys).n_true_positive_flags.nunique()==1).all())
         p=paired_effects(out,n_boot=12)
         self.assertFalse(p.empty)
-        self.assertTrue(set(p.comparison)=={"anomaly vs random","event_impact vs random"})
+        self.assertTrue(set(p.comparison)=={"anomaly vs random","event_impact vs random","event_impact vs anomaly"})
         # CI is based on number of distinct stations, not replicate rows.
         self.assertTrue((p.n_stations<=2).all())
 

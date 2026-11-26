@@ -45,3 +45,6 @@ conditional value of prioritization under a perfect verifier, not a
 deployable system.
 
 Always report negative results and novelty limitations.
+
+The primary contrast in `v2_paired_effects.csv` is `event_impact vs anomaly`.
+Plots now include `v2_gain_vs_anomaly.png` and `v2_gain_vs_random.png`.

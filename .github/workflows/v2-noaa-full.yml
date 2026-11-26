@@ -5,6 +5,8 @@ on:
       - research/event-impact-aware-qc-v2
     paths:
       - '.github/workflows/v2-noaa-full.yml'
+      - 'src/heatqc/review_v2.py'
+      - 'run_v2.py'
   workflow_dispatch:
 jobs:
   full-noaa-v2:
