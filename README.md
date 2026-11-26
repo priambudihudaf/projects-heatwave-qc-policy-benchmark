@@ -150,3 +150,7 @@ Tmax. Error injections, QC flags, and inspection outcomes are simulated, not
 actual NOAA quality-control actions. Even a "successful" reviewer uses the
 original provider-screened reference value (an optimistic oracle). See the
 [v2.1 methodology and limitations](docs/PILOT_V21_PROTOCOL.md).
+
+## Final methodological and novelty audit (26 November 2026)
+
+See [Final Audit — Pilot v2.1](docs/FINAL_AUDIT_2026-11-26.md) for a 2025–2026 literature matrix, verified output consistency, high-priority caveats (simulated labels and oracle review; exploratory test-set reuse), and the manuscript go/no-go decision. This report is **not** a proof of novelty or permission for institutional publication.
