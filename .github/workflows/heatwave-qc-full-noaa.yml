@@ -1,0 +1,31 @@
+name: Heatwave QC — complete public NOAA experiment
+on:
+  push:
+    paths:
+      - '.github/workflows/heatwave-qc-full-noaa.yml'
+  workflow_dispatch:
+jobs:
+  full-noaa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Complete NOAA public pilot (QC flags/errors are synthetic)
+        run: python run.py --mode real --stations 12 --reps 30
+      - name: Upload results and source manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heatwave-qc-noaa-12station-results
+          path: outputs/NOAA_PILOT/
+          if-no-files-found: warn

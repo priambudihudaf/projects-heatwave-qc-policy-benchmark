@@ -1,0 +1,29 @@
+name: Heatwave QC — public NOAA smoke pilot
+on:
+  push:
+    paths:
+      - '.github/workflows/heatwave-qc-noaa-pilot.yml'
+  workflow_dispatch:
+jobs:
+  real-noaa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install requirements
+        run: python -m pip install -r requirements.txt
+      - name: Run 3-station NOAA public pilot (controlled simulated QC, NOT real NOAA flags)
+        run: python run.py --mode real --stations 3 --reps 2
+      - name: Upload pilot scientific sensitivity outputs (no source raw data)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heatwave-qc-noaa-public-pilot
+          path: outputs/NOAA_PILOT/
+          if-no-files-found: warn
