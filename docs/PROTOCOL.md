@@ -1,3 +1,5 @@
+> **HISTORICAL v1 ONLY — NOT THE CURRENT v2.1 MANUSCRIPT PROTOCOL.** This document is preserved for reproducibility. For current code/methods see [v2.1 protocol](PILOT_V21_PROTOCOL.md) and [version history](VERSION_HISTORY.md).
+
 # Protocol — controlled event-level QC policy sensitivity
 
 **Status:** Research plan, not evidence of novelty or results (2026-11-26).

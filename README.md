@@ -1,104 +1,105 @@
-# Heatwave QC Policy Benchmark (independent research project)
+# Heatwave-Aware QC Review Prioritization — Research v2.1
 
-**Working title:** *Flag, Remove, or Cap? An Event-Level Assessment of Quality-Control Decisions on Heatwave Statistics*
+**Current research manuscript title:** *Retrospective Heatwave-Aware Prioritization of Quality-Control Reviews: A Controlled Sensitivity Study Using Public Temperature Observations*
 
-> **Research software / preregistered pilot, NOT a published result.**
-> No BMKG, Kalsel, or restricted institutional observations are used. The experiment
-> uses NOAA's already-QC-screened Daily01 Tmax as a **reference proxy**, with
-> explicitly **synthetic** flags/errors. Do not interpret results as evidence of
-> actual NOAA QC policies, nor as validated ground-truth sensor errors.
+**Current implementation:** v2.1, `run_v21.py` + `src/heatqc/review_v21.py` (which reuses helpers in `review_v2.py`).  
+**Status (26 November 2026):** completed exploratory controlled pilot and methodological audit; **GO for qualified manuscript drafting; NOT ready for submission or operational deployment**.
 
-This is the **standalone research repository**. Migrated from `priambudihudaf/kemayoran-rainfall-gapfill/projects/heatwave-qc-policy-benchmark/` on 2026-11-26. No BMKG or private station data are included.
+> **Scientific boundary:** NOAA USCRN Daily01 daily maximum temperature is public but **already quality-screened**. All experimental sensor errors, candidate QC flags, and reviewer outcomes are **synthetic**. No NOAA/BMKG operational QC decisions or real sensor-error rates are inferred. A successful simulated reviewer restores the QC-screened reference **exactly** (an optimistic oracle-on-success assumption). This is an **offline/retrospective** study, not real-time QC.
 
-## What this project asks
+## Research question
 
-With an *identical* QC-flag mask, how do three downstream choices — retain
-value with flag, remove value, and cap high flagged value — change **heatwave
-event recall, fragmentation, disappearance, duration loss, and peak temperature**?
+Given the **same simulated candidate flags** and a **fixed review budget**, does a label-blind, heatwave-event-impact priority score better preserve heatwave events than simpler prioritization heuristics? Where does it trade event preservation for fewer individually corrected injected errors?
 
-**The research gap remains a candidate**, not a verified novelty claim. 2025–2026
-studies already examine extreme-heat preservation and QC effects. This project
-isolates *post-flag handling* for controlled event-level sensitivity testing.
+The v2.1 experiment compares five strategies: **random, anomaly, threshold proximity, hot-run length, event impact**. Priority scores use contaminated observed Tmax, simulated flags, and training-only heatwave thresholds; **they do not receive true synthetic error labels or clean references**.
 
-## Run (Python 3.11+)
+## Latest reproducible study (v2.1)
 
-From this project directory:
+| Design element | v2.1 configuration |
+| --- | --- |
+| Public temperature product | NOAA USCRN Daily01, `T_DAILY_MAX`, station-local standard date |
+| Sampling | 18 candidate stations audited; 16 eligible; 12 selected with >=95% warm-season coverage in training, reserved validation, and evaluation |
+| Years | Train 2010–2020; reserved validation 2021–2022 (not tuned); **exploratory evaluation** 2023–2025 |
+| Event definition | Station-specific calendar-day training P90 (+/-7-day window), Tmax > P90, consecutive May–September hot days |
+| Sensitivity | At least 3 or 6 consecutive days; 1:1 IoU matching thresholds 0.25 or 0.50 |
+| Simulated flag regimes | Balanced / noisy; matched true-positive flags and false-positive counts across placement conditions |
+| FP placement | Uniform versus hot-enriched (6x relative sampling weight on observed hot days) |
+| Review workload | 10%, 25%, 50% of candidate flags (rounded up), identical within comparisons |
+| Reviewer success | 70%, 90%, 100%; success restores reference exactly, failure leaves missing |
+| Estimation | Paired trial comparisons, average by station-year; station-cluster bootstrap (300 resamples) |
+| Main outcome | Missed reference events + unmatched candidate events + fragmented reference events (equal-weight, task-specific composite) |
+
+**Evaluation 2023–2025 was reused during development from v1 to v2.1. It is not an untouched independent confirmatory test.** Sensitivity analyses are exploratory, and 155,520 downstream evaluation rows are highly dependent.
+
+### Reproducibility
+
+Use Python 3.11+. For the research implementation:
 
 ```bash
+git clone https://github.com/priambudihudaf/projects-heatwave-qc-policy-benchmark.git
+cd projects-heatwave-qc-policy-benchmark
+git checkout research/event-impact-aware-qc-v2-1
 python -m pip install -r requirements.txt
 python -m unittest discover -s tests -v
-python run.py --mode demo --stations 4 --reps 3
+python run_v21.py --mode demo --stations 3 --reps 1 --bootstrap 50
+python run_v21.py --mode real --stations 12 --reps 6 --bootstrap 300
 ```
 
-**DEMO uses entirely synthetic data and is not a scientific result.**
-Outputs: `outputs/SYNTHETIC_DEMO_NOT_RESULTS`.
+The demo is **entirely synthetic and NOT scientific evidence**. The real-mode experiment uses public NOAA observations as a QC-screened **reference proxy**, then imposes simulated errors, flags and review decisions.
 
-Real NOAA data (requires internet; hundreds of small downloads, cached locally; the program oversamples candidate stations and retains up to the requested number after completeness checks):
+**Colab:** [Run v2.1 notebook](https://colab.research.google.com/github/priambudihudaf/projects-heatwave-qc-policy-benchmark/blob/research/event-impact-aware-qc-v2-1/notebooks/Run_Heatwave_QC_V21_from_GitHub.ipynb).
 
-```bash
-python run.py --mode real --stations 12 --reps 30
-```
+Real-mode output directory: `outputs/V21_NOAA_CONTROLLED/`.
 
-Outputs: `outputs/NOAA_PILOT/`. All input source file URLs + SHA256 checksums
-are recorded in `source_manifest.csv`. Data are cached in `data/raw/` and
-are not committed.
+| Output file | Purpose |
+| --- | --- |
+| `v21_trials.csv` | Full paired synthetic trials, strategy outcomes and metadata |
+| `v21_paired_effects.csv` | Paired effects / 95% exploratory station-bootstrap intervals |
+| `v21_descriptive_summary.csv` | Distortion components, corrections, budgets and scenario summaries |
+| `v21_metadata.json` | Experimental settings, data scope, caveats |
+| `coverage_audit.csv` | Candidate station completeness, exclusions |
+| `source_manifest.csv` | NOAA URLs, download states, source SHA256 |
+| `v21_eventimpact_gain_robustness.png`, `v21_strategy_comparison.png` | Exploratory figures |
 
-## Open directly in Google Colab
+**Verified previous full run:** [NOAA v2.1 GitHub Actions](https://github.com/priambudihudaf/projects-heatwave-qc-policy-benchmark/actions/runs/45758900953), artifact `v21-noaa-robustness-results`; see [final audit](docs/FINAL_AUDIT_2026-11-26.md) for checks of the separately supplied Colab result ZIP. Source artifacts are subject to GitHub retention.
 
-[Run the dedicated notebook](https://colab.research.google.com/github/priambudihudaf/projects-heatwave-qc-policy-benchmark/blob/main/notebooks/Run_Heatwave_QC_from_GitHub.ipynb) — setup, tests, demo, NOAA real-data pilot and zipped results. No credentials or BMKG files needed.
+## What the audited pilot found
 
-## Reproducibility and validity
+- 288 NOAA source-manifest entries downloaded; 12 stations, 36 station-years.
+- **85** reference events lasting at least 3 days; **23** lasting at least 6 days.
+- **432** simulated corrupted station-year/regime/repetition series, **864** flag-mask trial groups, and **155,520** dependent strategy/evaluation rows; **not 155,520 independent observations**.
+- For balanced/uniform flags, 25% review budget, reviewer success 90%, 3-day events and IoU >=0.50: mean event-distortion counts per simulated trial were **0.838 anomaly**, **0.556 hot-run**, **0.426 event-impact**.
+- Paired event-impact gain over anomaly under that setting was **+0.412 simulated composite distortions per station-year**, exploratory 95% station-cluster bootstrap CI **[0.248, 0.639]**.
+- The anomaly prioritizer **corrected more injected individual errors** (3.546 vs 3.204 per trial in that setting). Event-impact's mean matched-event peak-temperature error did **not** demonstrably improve in the pilot.
+- Strongest methodological limitation: the score is **structurally aligned** with the event-level loss. Results do not establish universal algorithm superiority, real-world QC performance, or a new event-level counterfactual principle.
 
-- Data: NOAA USCRN **Daily01** (not raw weather station observations);
-  `T_DAILY_MAX` is field 6, temperature in °C; `LST_DATE` is the station's
-  local-standard-time day. Data missing sentinel `-9999.0` becomes NaN.
-- Timeline: train 2010–2020; validation 2021–2022 (reserved); test 2023–2025.
-- Heatwave: Tmax > station-wise P90 for calendar day (+/-7-day baseline
-  window), for at least 3 consecutive May–September days.
-- P90 and P99.5 clipping threshold use **training data only**.
-- Real-data station selection is deterministic from stations appearing in both
-  start and end year directory listings, with geographically distributed state
-  ordering, and requires >=95% warm-season coverage in all three periods.
-- Reference events are computed **before** introducing synthetic errors.
-- Flags are identical across the three policies within a trial. Some scenarios
-  deliberately use oracle knowledge of heatwave location / synthetic error
-  location. They are *stress tests*, **not deployable QC detectors**.
-- Capping is **counterfactual** and not recommended as a production practice.
-  Raw values and flags should be preserved in an audit trail.
-- Missing days break runs; no interpolating over missing periods.
-- Simulated repetitions resample a finite pool of heatwaves. They are not new
-  independent events; summary uses station-level cluster bootstrap.
-- USCRN quality-screened data can still contain errors: reference proxy is
-  not perfect ground truth. Synthetic errors do not replicate all real failures.
-- Manuscript publication, factual novelty, and acceptance are NOT implied.
+Read the **[final audit and publication gates](docs/FINAL_AUDIT_2026-11-26.md)** before quoting any result.
 
-## Directory
+## Manuscript preparation and publication status
 
-- `run.py`: full CLI analysis from data download to figures
-- `src/heatqc/noaa.py`: NOAA download, parser, demo generator, cache + source URLs
-- `src/heatqc/core.py`: P90 thresholds, event runs, policies, metrics
-- `src/heatqc/experiment.py`: randomized controlled scenarios + station bootstrap
-- `tests/`: offline unit tests and smoke test
-- `docs/PROTOCOL.md`: comprehensive experiment decisions / caveats
-- `docs/MANUSCRIPT_OUTLINE.md`: EGUsphere skeleton without invented Results
-- `docs/LITERATURE_2025_2026.md`: current relevant reading list
-- `.github/workflows/heatwave-qc.yml`: CI unit tests and synthetic smoke test
+1. [Current v2.1 manuscript outline and evidence map](docs/MANUSCRIPT_OUTLINE.md)
+2. [v2.1 controlled-sensitivity protocol](docs/PILOT_V21_PROTOCOL.md)
+3. [Final methodological and novelty audit](docs/FINAL_AUDIT_2026-11-26.md)
+4. [2025–2026 targeted novelty comparators](docs/LITERATURE_2025_2026.md)
+5. [Version history and legacy documentation](docs/VERSION_HISTORY.md)
 
-## Official data documentation
+**Draft now, submit later:** use data-supported findings and report component outcomes separately, verify bibliography and figures, consider an additional independent-station/period replication and lower synthetic-error prevalence, and satisfy author/affiliation permissions and journal requirements before submission. Such checks do **not** require a v3 redesign.
+
+## Version history (legacy code retained intentionally)
+
+| Version | Entry point | Scope | Status |
+| --- | --- | --- | --- |
+| v1 | `run.py` | Same flags, different handling: preserve / remove / cap | **Historical pilot**, not manuscript v2.1 |
+| v2 | `run_v2.py` | Random / anomaly / event-impact review prioritization, ideal reviewer | **Historical pilot** |
+| **v2.1** | **`run_v21.py`** | Five rankers, matched FP placements, imperfect oracle review, 1:1 IoU matching, paired uncertainty | **Active manuscript evidence** |
+
+Legacy components are kept for reproducibility; **do not run `run.py` or use the old v1 outline when reporting v2.1**. The research branch `research/event-impact-aware-qc-v2-1` is the authoritative v2.1 snapshot; the historical source migration is in [docs/MIGRATION.md](docs/MIGRATION.md).
+
+## Public sources and ethical scope
+
+- [NOAA USCRN products](https://www.ncei.noaa.gov/access/crn/products.html)
 - [NOAA Daily01 directory](https://www.ncei.noaa.gov/pub/data/uscrn/products/daily01/)
-- [NOAA Daily01 readme](https://www.ncei.noaa.gov/pub/data/uscrn/products/daily01/readme.txt)
-- [USCRN products](https://www.ncei.noaa.gov/access/crn/products.html)
+- [NOAA Daily01 product format](https://www.ncei.noaa.gov/pub/data/uscrn/products/daily01/readme.txt)
+- No restricted BMKG data, hidden NOAA QC flags, or actual reviewer labels are included.
 
-## Next checkpoints before EGUsphere
-
-1. Confirm 12 station availability and inspect date/missingness coverage on real NOAA.
-2. Audit whether the chosen P90 heatwave definition aligns with targeted literature.
-3. Add sensitivity analysis for 3 vs 6-day definitions, upper thresholds, and
-   strict independent-station evaluation.
-4. Verify 2025–2026 literature overlap, especially event-level post-QC studies.
-5. Inspect all results critically; no fabricated numeric findings in manuscript.
-6. Follow publication permissions/affiliation rules when submitting.
-
-## Reproduced NOAA pilot results
-
-Prior successful full 12-station test (before migration): [GitHub Actions run](https://github.com/priambudihudaf/kemayoran-rainfall-gapfill/actions/runs/45747326581) produced **12 stations**, **85 reference events**, **23,040 simulated policy evaluations**. These figures are process/output counts, **not evidence of scientific novelty or observed NOAA QC behavior**. The new repository has independent workflows that regenerate a fresh output ZIP from public NOAA data; download it from the `heatwave-qc-noaa-12station-results` artifact on the full NOAA Actions run.
+**Research software and exploratory simulations; not a production QC recommendation or evidence of an institution's actual actions.**

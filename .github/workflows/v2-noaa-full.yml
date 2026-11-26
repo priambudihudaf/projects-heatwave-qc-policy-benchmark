@@ -1,0 +1,31 @@
+name: V2 public NOAA — controlled equal-budget review benchmark
+on:
+  push:
+    branches:
+      - research/event-impact-aware-qc-v2
+    paths:
+      - '.github/workflows/v2-noaa-full.yml'
+      - 'src/heatqc/review_v2.py'
+      - 'run_v2.py'
+  workflow_dispatch:
+jobs:
+  full-noaa-v2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install
+        run: python -m pip install -r requirements.txt
+      - name: Offline tests
+        run: python -m unittest discover -s tests -v
+      - name: NOAA Daily01 + synthetic flags and ideal oracle reviews
+        run: python run_v2.py --mode real --stations 12 --reps 12
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v2-noaa-controlled-review-results
+          path: outputs/V2_NOAA_CONTROLLED/
+          if-no-files-found: warn
