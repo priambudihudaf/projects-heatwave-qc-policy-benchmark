@@ -102,3 +102,24 @@ are not committed.
 ## Reproduced NOAA pilot results
 
 Prior successful full 12-station test (before migration): [GitHub Actions run](https://github.com/priambudihudaf/kemayoran-rainfall-gapfill/actions/runs/45747326581) produced **12 stations**, **85 reference events**, **23,040 simulated policy evaluations**. These figures are process/output counts, **not evidence of scientific novelty or observed NOAA QC behavior**. The new repository has independent workflows that regenerate a fresh output ZIP from public NOAA data; download it from the `heatwave-qc-noaa-12station-results` artifact on the full NOAA Actions run.
+
+
+## Pilot v2 — event-impact-aware review triage (research branch)
+
+V1 is preserved on \`main\`. The opt-in \`research/event-impact-aware-qc-v2\` branch
+adds a simulated, equal-budget comparison of random, anomaly-based and
+**event-impact-aware review prioritization**, using NOAA QC-screened public Tmax
+with **synthetic errors, synthetic QC flags and an idealized oracle reviewer**.
+This is a research *stress test*, not a model of NOAA operational QC actions.
+
+\`\`\`bash
+python -m unittest discover -s tests -v
+python run_v2.py --mode demo --stations 3 --reps 2
+python run_v2.py --mode real --stations 12 --reps 12
+\`\`\`
+
+Read [Pilot v2 research protocol](docs/PILOT_V2_PROTOCOL.md),
+[execution guide](docs/PILOT_V2_RUN_GUIDE.md) and
+[Colab v2](notebooks/Run_Heatwave_QC_V2_from_GitHub.ipynb) for limitations.
+No results should be reported as scientific novelty until reproducibility,
+sensitivity checks, and 2025–2026 literature review are complete.
