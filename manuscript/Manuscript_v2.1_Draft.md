@@ -155,9 +155,7 @@ The full 144-setting sensitivity grid (2 regimes × 2 placements × 2 lengths ×
 
 ![Figure 2. Composite event distortion by strategy and flag regime](figures/Figure02_strategy_distortion.svg)
 
-**Figure 2a.** Composite event distortion across the five ranking strategies in the designated primary analysis slice, based on the archived NOAA v2.1 controlled-experiment CSV. Descriptive bars are mean counts per simulated trial.
-
-**Figure 2.** Paired gains from event impact relative to anomaly and hot-run under the four synthetic flag settings, using the designated primary slice. Intervals are exploratory station-level percentile bootstrap ranges. The displayed figure is a strategy-level descriptive companion; Figure 4 presents the paired bootstrap intervals directly from v21_paired_effects.csv.
+**Figure 2.** Composite event distortion across the five ranking strategies under the four synthetic flag settings in the designated primary analysis slice. Bars represent descriptive mean counts per simulated trial from v21_trials.csv. Uncertainty in *paired differences* is shown separately in Figure 4.
 
 ### 3.4 Distortion components and correction trade-offs
 
@@ -201,7 +199,7 @@ At a 25% budget, changing simulated reviewer success from 70% to 90% to 100% cha
 
 ![Figure 4. Primary paired gain uncertainty against anomaly and hot-run](figures/Figure04_paired_gains.svg)
 
-**Figure 4.** Plot event-impact paired gains against budget and simulated reviewer success; show the balanced/uniform scenario with distinct anomaly and hot-run comparators, and distinguish event duration in an optional supplementary panel. The displayed interval plot is derived from the archived v21_paired_effects.csv; the eight plotted comparisons share station-years and are not independent replications.
+**Figure 4.** Paired reduction in composite event distortion under event-impact prioritization relative to anomaly and hot-run in the four designated primary flag settings (minimum three-day events, IoU≥0.50, 25% budget, 90% simulated reviewer success). Horizontal segments depict exploratory 95% station-cluster bootstrap percentile intervals from v21_paired_effects.csv; the eight comparisons reuse the same station-years and are not independent replications.
 
 ## 4 Discussion
 
