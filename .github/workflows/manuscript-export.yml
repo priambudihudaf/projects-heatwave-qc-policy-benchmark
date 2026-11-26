@@ -1,0 +1,25 @@
+name: Export v2.1 manuscript source bundle
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'manuscript/**'
+      - '.github/workflows/manuscript-export.yml'
+  workflow_dispatch:
+jobs:
+  manuscript-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate paper and figure files
+        run: |
+          test -s manuscript/Manuscript_v2.1_Draft.md
+          ls manuscript/figures/Figure01_*.svg >/dev/null
+          ls manuscript/figures/Figure02_*.svg >/dev/null
+          ls manuscript/figures/Figure03_*.svg >/dev/null
+          ls manuscript/figures/Figure04_*.svg >/dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v21-manuscript-markdown-svg
+          path: manuscript/
+          if-no-files-found: error
