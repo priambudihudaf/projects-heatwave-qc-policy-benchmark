@@ -59,7 +59,7 @@ def main():
     summary.to_csv(out/"v21_descriptive_summary.csv",index=False)
 
     # Paired effects + station/bootstrap CI: plot comparisons for the
-    # preregistered primary scenario (3-day heatwave, IoU>=0.5, 25% review).
+    # designated primary v2.1 analysis (not prospectively preregistered) (3-day heatwave, IoU>=0.5, 25% review).
     comp=pairs[
         (pairs.sample_subset=="all") &
         (pairs.metric=="event_distortion_count") &
@@ -107,7 +107,7 @@ def main():
         "stations":stations,"n_stations":len(stations),"n_rows":len(trials),
         "n_reps":args.reps,"bootstrap_samples":args.bootstrap,
         "training":"2010-2020","validation":"2021-2022 reserved (NOT used for tuning)",
-        "independent_test":"2023-2025","variable":"NOAA USCRN Daily01 Tmax QC-screened proxy",
+        "evaluation_period":"2023-2025 (exploratory; reused during v1-v2.1 method development)","variable":"NOAA USCRN Daily01 Tmax QC-screened proxy",
         "synthetic_detector_regimes":["balanced","noisy"],
         "synthetic_fp_placements":list(FALSE_FLAG_PATTERNS),
         "reviewer_success_rates":list(REVIEW_RELIABILITIES),

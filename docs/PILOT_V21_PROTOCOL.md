@@ -1,6 +1,6 @@
 # Pilot v2.1 — Robustness protocol
 
-**Status:** reproducible controlled sensitivity experiment; NOT evidence of observed NOAA QC behavior and NOT submission-ready research.
+**Status:** reproducible exploratory controlled sensitivity experiment; **GO for carefully qualified manuscript drafting, NOT submission-ready**. The 2023–2025 evaluation period informed previous iterations and is **not an untouched confirmatory holdout**. Read the [final methodological audit](FINAL_AUDIT_2026-11-26.md) before citing effect sizes.
 
 ## Why v2.1?
 The v2 result suggested event-aware review might protect reference heatwaves better than local anomaly-based review at equal review budgets, but its synthetic QC flags disproportionately targeted hot days, all reviews were assumed perfect, and event matching used any day overlap. This iteration challenges those assumptions explicitly.

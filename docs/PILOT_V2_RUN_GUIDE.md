@@ -1,3 +1,5 @@
+> **HISTORICAL v2 ONLY — NOT THE CURRENT v2.1 MANUSCRIPT PROTOCOL.** This document is preserved for reproducibility. For current code/methods see [v2.1 protocol](PILOT_V21_PROTOCOL.md) and [version history](VERSION_HISTORY.md).
+
 # Pilot v2 — execution
 
 Branch: \`research/event-impact-aware-qc-v2\` (v1 on \`main\` remains unchanged).
