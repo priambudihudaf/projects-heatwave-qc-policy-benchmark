@@ -7,6 +7,10 @@
 
 > **Scientific boundary:** NOAA USCRN Daily01 daily maximum temperature is public but **already quality-screened**. All experimental sensor errors, candidate QC flags, and reviewer outcomes are **synthetic**. No NOAA/BMKG operational QC decisions or real sensor-error rates are inferred. A successful simulated reviewer restores the QC-screened reference **exactly** (an optimistic oracle-on-success assumption). This is an **offline/retrospective** study, not real-time QC.
 
+## Publication target: EGUsphere stand-alone preprint
+
+The current publication target is **EGUsphere — preprint not (immediately) targeting journal publication**. This route has moderator screening, not automatic acceptance or full journal peer review. The working manuscript is **not ready to submit as-is**, particularly because of author/affiliation approvals, final PDF/archival requirements, and Copernicus' restrictions on AI-generated manuscript text and interpretation. See [EGUsphere submission-readiness plan](docs/EGUSPHERE_STANDALONE_PREPRINT_PLAN.md) before publishing.
+
 ## Research question
 
 Given the **same simulated candidate flags** and a **fixed review budget**, does a label-blind, heatwave-event-impact priority score better preserve heatwave events than simpler prioritization heuristics? Where does it trade event preservation for fewer individually corrected injected errors?
